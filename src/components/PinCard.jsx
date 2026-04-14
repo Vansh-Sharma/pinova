@@ -6,6 +6,7 @@ import IconButton from "./ui/IconButton";
 function PinCard({ pin, index, onToggleLike, onToggleSave }) {
   const [isHovered, setIsHovered] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
+  const likesCount = Number(pin.likesCount || 0);
 
   return (
     <motion.article
@@ -73,7 +74,7 @@ function PinCard({ pin, index, onToggleLike, onToggleSave }) {
       <div className="mt-3">
         <div className="flex items-center justify-between gap-3">
           <p className="line-clamp-1 text-sm font-semibold text-white md:text-[15px]">{pin.title}</p>
-          <p className="text-[11px] font-medium text-slate-400">{pin.likes} likes</p>
+          <p className="text-[11px] font-medium text-slate-400">{likesCount} likes</p>
         </div>
         <p className="mt-1 line-clamp-2 text-xs text-slate-300 md:text-sm">{pin.description}</p>
         <div className="mt-3 flex flex-wrap gap-1.5">
