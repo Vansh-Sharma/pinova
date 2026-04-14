@@ -13,12 +13,15 @@ import {
   pinIdParamValidator,
 } from "../validators/pin.validator.js";
 import optionalAuthMiddleware from "../middleware/optional-auth.middleware.js";
+import env from "../config/env.js";
 
 const pinRouter = Router();
+const writeAuthGuard = env.useMockApi ? optionalAuthMiddleware : authMiddleware;
+const pinIdValidator = env.useMockApi ? [] : pinIdParamValidator;
 
 pinRouter.get("/feed", optionalAuthMiddleware, getFeedValidator, validateRequest, getFeed);
-pinRouter.post("/", authMiddleware, createPinValidator, validateRequest, createPin);
-pinRouter.post("/:pinId/like", authMiddleware, pinIdParamValidator, validateRequest, toggleLikePin);
-pinRouter.post("/:pinId/save", authMiddleware, pinIdParamValidator, validateRequest, toggleSavePin);
+pinRouter.post("/", writeAuthGuard, createPinValidator, validateRequest, createPin);
+pinRouter.post("/:pinId/like", writeAuthGuard, ...pinIdValidator, validateRequest, toggleLikePin);
+pinRouter.post("/:pinId/save", writeAuthGuard, ...pinIdValidator, validateRequest, toggleSavePin);
 
 export default pinRouter;

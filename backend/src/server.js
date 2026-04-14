@@ -4,10 +4,14 @@ import env from "./config/env.js";
 
 async function bootstrap() {
   try {
-    await connectDatabase();
+    if (!env.useMockApi) {
+      await connectDatabase();
+    }
     app.listen(env.port, () => {
       // eslint-disable-next-line no-console
-      console.log(`PinAI API running on port ${env.port}`);
+      console.log(
+        `PinAI API running on port ${env.port}${env.useMockApi ? " (mock mode)" : ""}`
+      );
     });
   } catch (error) {
     // eslint-disable-next-line no-console
